@@ -1,2 +1,4 @@
-com\example\App.class
-com\example\Pessoa.class
+controller/App.class
+utils/HibernateUtil.class
+model/domain/Pessoa.class
+main/java/controller/SrvCadastrarPessoa.class
