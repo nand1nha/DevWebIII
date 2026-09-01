@@ -28,7 +28,10 @@
     %>
 
     <h2>Cadastro de Cliente</h2>
-    <form name="cadastrocliente" method="POST" >
+    <form name="cadastrocliente" method="get" action="controller/SrvCadastrarPessoa">
+        
+        <input type="hidden" name="operacao" value="incluir"><br>
+        
         Nome:<br>
         <input type="text" name="nome" value=""><br>
         CPF:<br>
@@ -47,8 +50,8 @@
         <input type="checkbox" name="comunicados" value="sim"><br>
         Obs.:<br>
         <textarea name="obs" rows="4" cols="20"></textarea><br>
-        <input type="submit" name="operacao" value="OK">
-        <input type="reset" name="operacao" value="Reset">
+        <input type="submit" value="OK">
+        <input type="reset"  value="Reset">
     </form>
 
 </body>

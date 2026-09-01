@@ -10,10 +10,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import main.java.model.application.AplCadastrarCliente;
 import model.domain.Pessoa;
 import utils.HibernateUtil;
 
-@WebServlet("/controller/SrvCadastrarCliente")
+@WebServlet("/controller/SrvCadastrarPessoa")
 public class SrvCadastrarPessoa extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -37,17 +38,15 @@ public class SrvCadastrarPessoa extends HttpServlet {
 
     switch (aux_operacao) {
         case "incluir":
-
-             System.out.println("Cadastrando pessoa: " + aux_nome + ", CPF: " + aux_cpf);
         
-            // int retorno = AplCadastrarCliente.incluirCliente(aux_nome, aux_cpf);
-            // if (retorno == 1){
-            //     //chamaa pagina de sucesso
-            //     response.sendRedirect("listagem-atores.jsp");
-            // }else
-            //     //chama pagina de erro.
+            int retorno = AplCadastrarCliente.incluirCliente(aux_nome, aux_cpf);
+            if (retorno == 1){
+                //chama pagina de sucesso
+                response.sendRedirect("listagem-atores.jsp");
+            }else
+                //chama pagina de erro.
                 
-            //     break;
+                break;
             
         case "alterar":
             

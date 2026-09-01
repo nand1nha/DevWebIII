@@ -2,3 +2,4 @@ controller/App.class
 utils/HibernateUtil.class
 model/domain/Pessoa.class
 main/java/controller/SrvCadastrarPessoa.class
+main/java/model/application/AplCadastrarCliente.class
