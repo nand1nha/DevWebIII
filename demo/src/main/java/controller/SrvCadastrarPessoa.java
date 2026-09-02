@@ -39,10 +39,10 @@ public class SrvCadastrarPessoa extends HttpServlet {
     switch (aux_operacao) {
         case "incluir":
         
-            int retorno = AplCadastrarCliente.incluirCliente(aux_nome, aux_cpf);
-            if (retorno == 1){
+            int retorno = AplCadastrarCliente.incluirCliente(aux_nome, aux_cpf, aux_endereco, aux_sexo, aux_tipo, aux_comunicados, aux_obs);
+            if (retorno == 4){
                 //chama pagina de sucesso
-                response.sendRedirect("listagem-atores.jsp");
+                response.sendRedirect("../listagem-atores.jsp");
             }else
                 //chama pagina de erro.
                 
@@ -51,39 +51,19 @@ public class SrvCadastrarPessoa extends HttpServlet {
         case "alterar":
             
             break;
+
+        case "excluir":
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            AplCadastrarCliente.excluirCliente(id);
+
+            response.sendRedirect("../listagem-atores.jsp");
+
+            break;
     }
 
 
     System.out.println(aux_nome);
-
-
-    /*
-
-    try (Session session = HibernateUtil
-    .getSessionFactory()
-    .openSession()) {
-
-    // Consulta todos os atores
-    List<Ator> atores = session
-    .createQuery("from Ator order by nome", Ator.class)
-    .getResultList();
-
-    // Envia a lista para o JSP
-    request.setAttribute("atores", atores);
-
-    // Encaminha para a página JSP
-    request.getRequestDispatcher("/view/listagem-atores.jsp")
-    .forward(request, response);
-
-    } catch (Exception e) {
-
-    throw new ServletException(
-    "Erro ao consultar os atores no banco de dados.",
-    e);
-    }
-
-    */
-    
     }
 
 }

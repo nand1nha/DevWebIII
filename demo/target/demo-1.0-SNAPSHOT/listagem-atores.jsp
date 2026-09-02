@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.hibernate.Session" %>
-<%@ page import="util.HibernateUtil" %>
+<%@ page import="utils.HibernateUtil" %>
 <%@ page import="model.domain.Pessoa" %>
 
 <!DOCTYPE html>
@@ -23,15 +23,12 @@ out.println("<table border='1'>");
 out.println("<tr>");
 out.println("<th>ID</th>");
 out.println("<th>Nome</th>");
-out.println("<th>CPF</th>");
-out.println("</tr>");
 
 for (Pessoa pessoa : pessoas) {
 
 out.println("<tr>");
 out.println("<td>" + pessoa.getId() + "</td>");
-out.println("<td>" + pessoa.getNome() + "</td>");
-out.println("<td>" + pessoa.getCpf() + "</td>");
+out.println("<td><a href='SrvCadastrarPessoa?aux_operacao=excluir&id=" + pessoa.getId() + "'>" + pessoa.getNome() + "</a></td>");
 out.println("</tr>");
 }
 

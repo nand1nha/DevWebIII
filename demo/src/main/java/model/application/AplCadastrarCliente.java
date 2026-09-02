@@ -15,7 +15,7 @@ public class AplCadastrarCliente {
     public static int SUCESSO = 4;
 
 
-    public static int incluirCliente(String nome, String cpf) {
+    public static int incluirCliente(String nome, String cpf, String endereco, String sexo, String tipo, String receberComunicados, String obs) {
         if (nome.equals("")) {
             return ERRO_NOMEINVALIDO;
         }
@@ -24,6 +24,11 @@ public class AplCadastrarCliente {
         Pessoa a = new Pessoa();
         a.setNome(nome);
         a.setCPF(cpf);
+        a.setEndereco(endereco);
+        a.setSexo(sexo);
+        a.setTipo(tipo);
+        a.setReceberComunicados(receberComunicados);
+        a.setObs(obs);
 
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
@@ -48,6 +53,37 @@ public class AplCadastrarCliente {
             t.rollback();
 
             return ERRO_GERAL;
+
+        } finally {
+            session.close();
+        }
+    }
+
+    public static int excluirCliente(int id) {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = null;
+
+        try {
+            t = session.beginTransaction();
+
+            Pessoa pessoa = session.get(Pessoa.class, id);
+
+            if (pessoa != null) {
+                session.delete(pessoa);
+            }
+
+            t.commit();
+
+            return SUCESSO;
+
+        } catch (HibernateException e) {
+
+            if (t != null) {
+                t.rollback();
+            }
+
+            return ERRO_PERSISTENCIA;
 
         } finally {
             session.close();

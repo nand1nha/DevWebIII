@@ -39,8 +39,8 @@
         Endereco:<br>
         <input type="text" name="endereco" value=""><br>
         Sexo:<br>
-        <input type="radio" name="sexo" value="masc">Masculino<input type="radio" name="sexo"
-        value="fem">Feminino<br>
+        <input type="radio" name="sexo" value="masc">Masculino
+        <input type="radio" name="sexo" value="fem">Feminino<br>
         Tipo:<br>
         <select name="tipo">
         <option value="Normal">Normal</option>
