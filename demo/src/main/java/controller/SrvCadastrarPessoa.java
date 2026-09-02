@@ -54,8 +54,8 @@ public class SrvCadastrarPessoa extends HttpServlet {
 
         case "excluir":
             int id = Integer.parseInt(request.getParameter("id"));
-            AplCadastrarCliente.excluirCliente(id);
-            if (retorno == 4){
+            int retornoExcluir = AplCadastrarCliente.excluirCliente(id);
+            if (retornoExcluir == 4){
                 //chama pagina de sucesso
                 response.sendRedirect("../listagem-atores.jsp");
             }else
