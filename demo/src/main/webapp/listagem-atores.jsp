@@ -28,7 +28,7 @@ for (Pessoa pessoa : pessoas) {
 
 out.println("<tr>");
 out.println("<td>" + pessoa.getId() + "</td>");
-out.println("<td><a href='SrvCadastrarPessoa?aux_operacao=excluir&id=" + pessoa.getId() + "'>" + pessoa.getNome() + "</a></td>");
+out.println("<td><a href='controller/SrvCadastrarPessoa?operacao=excluir&id=" + pessoa.getId() + "'>" + pessoa.getNome() + "</a></td>");
 out.println("</tr>");
 }
 
