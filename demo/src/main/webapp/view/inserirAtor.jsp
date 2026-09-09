@@ -18,7 +18,6 @@
         <input type="text" name="nome" value=""><br>
 
         <input type="submit" value="OK">
-        <input type="reset"  value="Reset">
     </form>
 
 </body>
