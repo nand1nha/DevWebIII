@@ -1,13 +1,13 @@
 package main.java.model.application;
 
-import model.domain.Pessoa;
+import model.domain.Ator;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.HibernateException;
 import utils.HibernateUtil; 
 
-public class AplCadastrarCliente {
+public class AplCadastrarAtor {
 
     public static int ERRO_NOMEINVALIDO = 1;
     public static int ERRO_PERSISTENCIA = 2;
@@ -15,20 +15,14 @@ public class AplCadastrarCliente {
     public static int SUCESSO = 4;
 
 
-    public static int incluirCliente(String nome, String cpf, String endereco, String sexo, String tipo, String receberComunicados, String obs) {
+    public static int incluirAtor(String nome) {
         if (nome.equals("")) {
             return ERRO_NOMEINVALIDO;
         }
 
         // Criar o objeto a ser persistido
-        Pessoa a = new Pessoa();
+        Ator a = new Ator();
         a.setNome(nome);
-        a.setCPF(cpf);
-        a.setEndereco(endereco);
-        a.setSexo(sexo);
-        a.setTipo(tipo);
-        a.setReceberComunicados(receberComunicados);
-        a.setObs(obs);
 
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
@@ -59,7 +53,7 @@ public class AplCadastrarCliente {
         }
     }
 
-    public static int excluirCliente(int id) {
+    public static int excluirAtor(int id) {
 
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = null;
@@ -67,10 +61,10 @@ public class AplCadastrarCliente {
         try {
             t = session.beginTransaction();
 
-            Pessoa pessoa = session.get(Pessoa.class, id);
+            Ator ator = session.get(Ator.class, id);
 
-            if (pessoa != null) {
-                session.delete(pessoa);
+            if (ator != null) {
+                session.delete(ator);
             }
 
             t.commit();
@@ -89,5 +83,51 @@ public class AplCadastrarCliente {
             session.close();
         }
     }
+
+    public static Ator buscarAtor(int id){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Ator ator = session.get(Ator.class, id);
+        session.close();
+        return ator;
+    }
+
+    public static int alterarAtor(int id, String nome){
+        if (nome.equals("")) {
+            return ERRO_NOMEINVALIDO;
+        }
+
+        SessionFactory sf = HibernateUtil.getSessionFactory();
+        Session session = sf.openSession();
+
+        Transaction t = null;
+        try {
+            t = session.beginTransaction();
+
+            Ator a = session.get(Ator.class, id);
+            a.setNome(nome);
+
+            session.update(a);
+
+            t.commit();
+
+            return SUCESSO;
+        } catch (HibernateException he) {
+
+            t.rollback();
+
+            return ERRO_PERSISTENCIA;
+
+        } catch (Exception e) {
+
+            t.rollback();
+
+            return ERRO_GERAL;
+
+        } finally {
+            session.close();
+        }
+    }
+
+    
     
 }

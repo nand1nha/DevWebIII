@@ -10,12 +10,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import main.java.model.application.AplCadastrarCliente;
-import model.domain.Pessoa;
+import main.java.model.application.AplCadastrarAtor;
+import model.domain.Ator;
 import utils.HibernateUtil;
 
-@WebServlet("/controller/SrvCadastrarPessoa")
-public class SrvCadastrarPessoa extends HttpServlet {
+@WebServlet("/controller/SrvCadastrarAtor")
+public class SrvCadastrarAtor extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -26,12 +26,6 @@ public class SrvCadastrarPessoa extends HttpServlet {
 
 
     String aux_nome = request.getParameter("nome");
-    String aux_cpf = request.getParameter("cpf");
-    String aux_endereco = request.getParameter("endereco");
-    String aux_sexo = request.getParameter("sexo");
-    String aux_tipo = request.getParameter("tipo");
-    String aux_comunicados = request.getParameter("comunicados");
-    String aux_obs = request.getParameter("obs");
     
     String aux_operacao = request.getParameter("operacao");
 
@@ -39,29 +33,40 @@ public class SrvCadastrarPessoa extends HttpServlet {
     switch (aux_operacao) {
         case "incluir":
         
-            int retorno = AplCadastrarCliente.incluirCliente(aux_nome, aux_cpf, aux_endereco, aux_sexo, aux_tipo, aux_comunicados, aux_obs);
+            int retorno = AplCadastrarAtor.incluirAtor(aux_nome);
             if (retorno == 4){
                 //chama pagina de sucesso
-                response.sendRedirect("../listagem-atores.jsp");
-            }else
+                response.sendRedirect("../view/listagemAtores.jsp");
+            }else{
+
                 //chama pagina de erro.
                 
-                break;
+            }
+                
+            break;
             
         case "alterar":
-            
+
+            int idAlterar = Integer.parseInt(request.getParameter("id"));
+            int retornoAlterar = AplCadastrarAtor.alterarAtor(idAlterar, aux_nome);
+            if (retornoAlterar == 4) {
+                response.sendRedirect("../view/listagemAtores.jsp");
+            } else {
+                //chama pagina de erro.
+            }
+        
             break;
 
         case "excluir":
             int id = Integer.parseInt(request.getParameter("id"));
-            int retornoExcluir = AplCadastrarCliente.excluirCliente(id);
+            int retornoExcluir = AplCadastrarAtor.excluirAtor(id);
             if (retornoExcluir == 4){
                 //chama pagina de sucesso
-                response.sendRedirect("../listagem-atores.jsp");
-            }else
+                response.sendRedirect("../view/listagemAtores.jsp");
+            }else{
                 //chama pagina de erro.
-                
-                break;
+            }    
+            break;
     }
 
 

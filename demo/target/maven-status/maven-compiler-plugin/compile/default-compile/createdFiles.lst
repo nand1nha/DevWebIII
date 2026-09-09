@@ -1,5 +1,5 @@
 controller\App.class
-main\java\model\application\AplCadastrarCliente.class
-model\domain\Pessoa.class
-main\java\controller\SrvCadastrarPessoa.class
+main\java\model\application\AplCadastrarAtor.class
 utils\HibernateUtil.class
+main\java\controller\SrvCadastrarAtor.class
+model\domain\Ator.class

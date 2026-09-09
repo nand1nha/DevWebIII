@@ -4,7 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import model.domain.Pessoa;
+import model.domain.Ator;
 
 /**
  * Hello world!
@@ -22,9 +22,9 @@ public class App
         Session session = factory.openSession();
         session.beginTransaction();
 
-        Pessoa p = new Pessoa();
-        p.setNome("João");
-        session.persist(p);
+        Ator a = new Ator();
+        a.setNome("João");
+        session.persist(a);
 
         session.getTransaction().commit();
         session.close();

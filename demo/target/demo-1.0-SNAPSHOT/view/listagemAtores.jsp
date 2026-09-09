@@ -1,7 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.hibernate.Session" %>
 <%@ page import="utils.HibernateUtil" %>
-<%@ page import="model.domain.Pessoa" %>
+<%@ page import="model.domain.Ator" %>
 
 <!DOCTYPE html>
 
@@ -15,20 +15,24 @@ try (Session sessionHibernate = HibernateUtil.getSessionFactory().openSession())
 
 System.out.println("====== Conexão com o banco realizada com sucesso! ======= ");
 
-List<Pessoa> pessoas = sessionHibernate
-.createQuery("from Pessoa", Pessoa.class)
+List<Ator> atores = sessionHibernate
+.createQuery("from Ator", Ator.class)
 .getResultList();
 
 out.println("<table border='1'>");
 out.println("<tr>");
 out.println("<th>ID</th>");
 out.println("<th>Nome</th>");
+out.println("<th>Editar</th>");
+out.println("<th>Excluir</th>");
 
-for (Pessoa pessoa : pessoas) {
+for (Ator ator : atores) {
 
 out.println("<tr>");
-out.println("<td>" + pessoa.getId() + "</td>");
-out.println("<td><a href='controller/SrvCadastrarPessoa?operacao=excluir&id=" + pessoa.getId() + "'>" + pessoa.getNome() + "</a></td>");
+out.println("<td>" + ator.getId() + "</td>");
+out.println("<td>" + ator.getNome() + "</td>");
+out.println("<td><a href='../view/editarAtor.jsp?id=" + ator.getId() + "'> Editar</a></td>");
+out.println("<td><a href='../controller/SrvCadastrarAtor?operacao=excluir&id=" + ator.getId() + "'> Excluir</a></td>");
 out.println("</tr>");
 }
 
