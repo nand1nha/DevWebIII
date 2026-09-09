@@ -8,9 +8,21 @@
     int id = Integer.parseInt(request.getParameter("id"));
     Ator ator = AplCadastrarAtor.buscarAtor(id); 
 %>
-<form action="../controller/SrvCadastrarAtor" method="get">
-    <input type="hidden" name="operacao" value="alterar">
-    <input type="hidden" name="id" value="<%= ator.getId() %>">
-    <input type="text" name="nome" value="<%= ator.getNome() %>">
-    <button type="submit">Salvar</button>
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Locadora</title>
+</head>
+
+<body>
+    <h2>Edição do Ator</h2>
+    <form action="../controller/SrvCadastrarAtor" method="get">
+        <input type="hidden" name="operacao" value="alterar">
+        <input type="hidden" name="id" value="<%= ator.getId() %>">
+        <input type="text" name="nome" value="<%= ator.getNome() %>">
+        <button type="submit">Salvar</button>
+    </form>
+
+</body>
+</html>

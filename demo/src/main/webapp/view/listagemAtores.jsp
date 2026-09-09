@@ -5,15 +5,13 @@
 
 <!DOCTYPE html>
 
-<html> <head> <meta charset="UTF-8"> <title>Teste Hibernate</title> </head> <body>
-
-<h1>Teste de conexão com o banco</h1>
+<html> <head> <meta charset="UTF-8"> <title>Locadora</title> </head> <body>
 
 <%
 
 try (Session sessionHibernate = HibernateUtil.getSessionFactory().openSession()) {
 
-System.out.println("====== Conexão com o banco realizada com sucesso! ======= ");
+System.out.println("====== Lista da Atores! ======= ");
 
 List<Ator> atores = sessionHibernate
 .createQuery("from Ator", Ator.class)

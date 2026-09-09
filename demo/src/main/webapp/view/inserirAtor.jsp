@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Teste Hibernate</title>
+    <title>Locadora</title>
 </head>
 
 <body>

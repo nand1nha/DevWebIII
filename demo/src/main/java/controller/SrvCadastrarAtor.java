@@ -38,9 +38,8 @@ public class SrvCadastrarAtor extends HttpServlet {
                 //chama pagina de sucesso
                 response.sendRedirect("../view/listagemAtores.jsp");
             }else{
-
                 //chama pagina de erro.
-                
+                response.sendRedirect("../view/erro.jsp?msg=" + mensagemErro(retorno));
             }
                 
             break;
@@ -53,6 +52,7 @@ public class SrvCadastrarAtor extends HttpServlet {
                 response.sendRedirect("../view/listagemAtores.jsp");
             } else {
                 //chama pagina de erro.
+                response.sendRedirect("../view/erro.jsp?msg=" + mensagemErro(retornoAlterar));
             }
         
             break;
@@ -65,6 +65,7 @@ public class SrvCadastrarAtor extends HttpServlet {
                 response.sendRedirect("../view/listagemAtores.jsp");
             }else{
                 //chama pagina de erro.
+                response.sendRedirect("../view/erro.jsp?msg=" + mensagemErro(retornoExcluir));
             }    
             break;
     }
@@ -72,5 +73,14 @@ public class SrvCadastrarAtor extends HttpServlet {
 
     System.out.println(aux_nome);
     }
+
+    private String mensagemErro(int codigo) {
+    switch (codigo) {
+        case 1: return "Nome inválido.";
+        case 2: return "Erro ao acessar o banco de dados.";
+        case 3: return "Erro inesperado no sistema.";
+        default: return "Erro desconhecido.";
+    }
+}
 
 }
