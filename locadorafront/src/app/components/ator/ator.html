@@ -1,28 +1,77 @@
-<div class="container">
-
-  <h1>Cadastro de Ator</h1>
-
-  <form (ngSubmit)="salvar()">
-
-    <div class="campo">
-      <label for="nome">Nome:</label>
-
-      <input
-        type="text"
-        id="nome"
-        name="nome"
-        [(ngModel)]="nome"
-        placeholder="Digite o nome do ator"
-        required
-      >
+<div class="crud-page">
+  <header class="crud-header">
+    <div>
+      <h2>Gerenciar Atores</h2>
+      <p>Cadastre, edite ou remova atores do sistema.</p>
     </div>
-
-    <button type="submit">
-      Salvar
+    <button class="btn btn-primary" (click)="abrirFormulario()">
+      <span>+</span> Adicionar Ator
     </button>
+  </header>
 
-  </form>
-
-  
-
+  <!-- Tabela (desktop) -->
+  <div class="table-wrapper">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th style="width: 80px;">ID</th>
+          <th>Nome</th>
+          <th style="width: 200px; text-align: right;">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (ator of atores; track ator.id) {
+          <tr>
+            <td><span class="badge-id">#{{ ator.id }}</span></td>
+            <td class="nome">{{ ator.nome }}</td>
+            <td class="acoes">
+              <button class="btn btn-ghost" (click)="editarAtor(ator.id)">Editar</button>
+              <button class="btn btn-danger" (click)="excluirAtor(ator.id)">Excluir</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="3" class="vazio">Nenhum ator cadastrado.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
+
+<!-- Modal -->
+@if (mostrarFormulario) {
+  <div class="modal-backdrop" (click)="cancelar()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ atorAtual.id === 0 ? 'Adicionar Ator' : 'Editar Ator' }}</h3>
+        <button class="btn-close" (click)="cancelar()">×</button>
+      </div>
+
+      <form (ngSubmit)="salvarAtor()" #form="ngForm" class="modal-body">
+        <div class="form-group">
+          <label for="nome">Nome do Ator</label>
+          <input
+            id="nome"
+            type="text"
+            [(ngModel)]="atorAtual.nome"
+            name="nome"
+            required
+            placeholder="Ex.: Leonardo DiCaprio"
+            #nome="ngModel"
+            class="input">
+          @if (nome.invalid && nome.touched) {
+            <small class="erro">Informe o nome do ator.</small>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+            {{ atorAtual.id === 0 ? 'Salvar' : 'Atualizar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

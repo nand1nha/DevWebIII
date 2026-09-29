@@ -1,1 +1,77 @@
-<p>diretor works!</p>
+<div class="crud-page">
+  <header class="crud-header">
+    <div>
+      <h2>Gerenciar Diretores</h2>
+      <p>Cadastre, edite ou remova diretores do sistema.</p>
+    </div>
+    <button class="btn btn-primary" (click)="abrirFormulario()">
+      <span>+</span> Adicionar Diretor
+    </button>
+  </header>
+
+  <!-- Tabela (desktop) -->
+  <div class="table-wrapper">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th style="width: 80px;">ID</th>
+          <th>Nome</th>
+          <th style="width: 200px; text-align: right;">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (diretor of diretores; track diretor.id) {
+          <tr>
+            <td><span class="badge-id">#{{ diretor.id }}</span></td>
+            <td class="nome">{{ diretor.nome }}</td>
+            <td class="acoes">
+              <button class="btn btn-ghost" (click)="editarDiretor(diretor.id)">Editar</button>
+              <button class="btn btn-danger" (click)="excluirDiretor(diretor.id)">Excluir</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="3" class="vazio">Nenhum diretor cadastrado.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+@if (mostrarFormulario) {
+  <div class="modal-backdrop" (click)="cancelar()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ diretorAtual.id === 0 ? 'Adicionar Diretor' : 'Editar Diretor' }}</h3>
+        <button class="btn-close" (click)="cancelar()">×</button>
+      </div>
+
+      <form (ngSubmit)="salvarDiretor()" #form="ngForm" class="modal-body">
+        <div class="form-group">
+          <label for="nome">Nome do Diretor</label>
+          <input
+            id="nome"
+            type="text"
+            [(ngModel)]="diretorAtual.nome"
+            name="nome"
+            required
+            placeholder="Ex.: Leonardo DiCaprio"
+            #nome="ngModel"
+            class="input">
+          @if (nome.invalid && nome.touched) {
+            <small class="erro">Informe o nome do diretor.</small>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+            {{ diretorAtual.id === 0 ? 'Salvar' : 'Atualizar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

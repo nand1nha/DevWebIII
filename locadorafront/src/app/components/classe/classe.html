@@ -1,1 +1,121 @@
-<p>classe works!</p>
+<div class="crud-page">
+  <header class="crud-header">
+    <div>
+      <h2>Gerenciar Classes</h2>
+      <p>Cadastre, edite ou remova classes do sistema.</p>
+    </div>
+    <button class="btn btn-primary" (click)="abrirFormulario()">
+      <span>+</span> Adicionar Classe
+    </button>
+  </header>
+
+  <div class="table-wrapper">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th style="width: 80px;">ID</th>
+          <th>Nome</th>
+          <th style="width: 120px;">Valor</th>
+          <th style="width: 120px;">Prazo</th>
+          <th style="width: 200px; text-align: right;">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (classe of classes; track classe.id) {
+          <tr>
+            <td data-label="ID">
+              <span class="badge-id">#{{ classe.id }}</span>
+            </td>
+            <td data-label="Nome" class="nome">{{ classe.nome }}</td>
+            <td data-label="Valor" class="valor">
+              R$ {{ classe.valor | number:'1.2-2' }}
+            </td>
+            <td data-label="Prazo de Devolução" class="prazo">
+              {{ classe.prazoDevolucao }} dias
+            </td>
+            <td data-label="Ações" class="acoes">
+              <button class="btn btn-ghost" (click)="editarClasse(classe.id)">Editar</button>
+              <button class="btn btn-danger" (click)="excluirClasse(classe.id)">Excluir</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="vazio">Nenhuma classe cadastrada.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+@if (mostrarFormulario) {
+  <div class="modal-backdrop" (click)="cancelar()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ classeAtual.id === 0 ? 'Adicionar Classe' : 'Editar Classe' }}</h3>
+        <button class="btn-close" (click)="cancelar()">×</button>
+      </div>
+
+      <form (ngSubmit)="salvarClasse()" #form="ngForm" class="modal-body">
+        <div class="form-group">
+          <label for="nome">Nome da Classe</label>
+          <input
+            id="nome"
+            type="text"
+            [(ngModel)]="classeAtual.nome"
+            name="nome"
+            required
+            placeholder="Ex.: Lançamento"
+            #nome="ngModel"
+            class="input">
+          @if (nome.invalid && nome.touched) {
+            <small class="erro">Informe o nome da classe.</small>
+          }
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="valor">Valor (R$)</label>
+            <input
+              id="valor"
+              type="number"
+              step="0.01"
+              [(ngModel)]="classeAtual.valor"
+              name="valor"
+              required
+              placeholder="0,00"
+              #valor="ngModel"
+              class="input">
+            @if (valor.invalid && valor.touched) {
+              <small class="erro">Informe o valor.</small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="prazoDevolucao">Prazo de Devolução (dias)</label>
+            <input
+              id="prazoDevolucao"
+              type="number"
+              [(ngModel)]="classeAtual.prazoDevolucao"
+              name="prazoDevolucao"
+              required
+              placeholder="Ex.: 3"
+              #prazo="ngModel"
+              class="input">
+            @if (prazo.invalid && prazo.touched) {
+              <small class="erro">Informe o prazo.</small>
+            }
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+            {{ classeAtual.id === 0 ? 'Salvar' : 'Atualizar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

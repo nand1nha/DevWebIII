@@ -1,1 +1,69 @@
-<p>home works!</p>
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.aberta]="menuAberto">
+    <div class="logo">
+      <div class="logo-icon">🎬</div>
+      <div class="logo-text">
+        <strong>Locadora</strong>
+        <span>DevWeb III</span>
+      </div>
+    </div>
+
+    <nav class="menu">
+      <a routerLink="/home/ator" routerLinkActive="active" (click)="fecharMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>Ator</span>
+      </a>
+
+      <a routerLink="/home/classe" routerLinkActive="active" (click)="fecharMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+        <span>Classe</span>
+      </a>
+
+      <a routerLink="/home/diretor" routerLinkActive="active" (click)="fecharMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 7l-7 5 7 5V7z"/>
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+        </svg>
+        <span>Diretor</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <small>© 2026 Locadora</small>
+    </div>
+  </aside>
+
+  <!-- Overlay mobile -->
+  @if (menuAberto) {
+    <div class="overlay" (click)="fecharMenu()"></div>
+  }
+
+  <!-- Conteúdo -->
+  <main class="content">
+    <header class="topbar">
+      <button class="btn-menu" (click)="toggleMenu()" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+
+      <h1 class="page-title">
+        <router-outlet name="title"></router-outlet>
+        Bem-vindo 👋
+      </h1>
+    </header>
+
+    <section class="page-body">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

@@ -6,22 +6,17 @@ import { Home } from './components/home/home';
 
 export const routes: Routes = [
   {
-    path: '',
-    component: Home
+    path: 'home',
+    component: Home,
+    children: [
+      { path: 'ator', component: Ator},
+      { path: 'classe', component: Classe},
+      { path: 'diretor', component: Diretor},
+      // Rota padrão: ao entrar em /home, redireciona para /home/ator
+      { path: '', redirectTo: 'ator', pathMatch: 'full' } 
+    ]
   },
-  {
-    path: 'ator',
-    component: Ator
-  },
-
-  {
-    path: 'classe',
-    component: Classe
-  },
-
-  {
-    path: 'diretor',
-    component: Diretor
-  }
+  // Rota padrão do sistema
+  { path: '', redirectTo: '/home', pathMatch: 'full' }
      
 ];
