@@ -1,4 +1,4 @@
-package main.java.model.application;
+package model.application;
 
 import model.domain.Ator;
 import org.hibernate.Session;

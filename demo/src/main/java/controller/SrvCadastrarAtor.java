@@ -1,4 +1,4 @@
-package main.java.controller;
+package controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,7 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import main.java.model.application.AplCadastrarAtor;
+import model.application.AplCadastrarAtor;
 import model.domain.Ator;
 import utils.HibernateUtil;
 

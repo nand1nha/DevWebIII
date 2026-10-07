@@ -2,7 +2,7 @@
 <%@ page import="org.hibernate.Session" %>
 <%@ page import="utils.HibernateUtil" %>
 <%@ page import="model.domain.Ator" %>
-<%@ page import="main.java.model.application.AplCadastrarAtor" %>
+<%@ page import="model.application.AplCadastrarAtor" %>
 
 <%
     int id = Integer.parseInt(request.getParameter("id"));
