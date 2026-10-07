@@ -1,4 +1,4 @@
-package locadora.backend.model;
+package locadora.backend.model.domain;
 
 import lombok.Getter;
 import lombok.Setter;
