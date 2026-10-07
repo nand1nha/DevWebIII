@@ -1,11 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-interface DiretorInterface {
-  id: number;
-  nome: string;
-}
+import { DiretorInterface, DiretorService } from '../../services/diretor-service';
 
 @Component({
   selector: 'app-diretor',
@@ -14,45 +10,97 @@ interface DiretorInterface {
   styleUrl: './diretor.css',
 })
 export class Diretor {
-  diretores: DiretorInterface[] = [
-    { id: 1, nome: 'Christopher Nolan' }
-  ];
+  diretores = signal<DiretorInterface[]>([]);
+
+  mostrarFormulario = signal(false);
 
   diretorAtual: DiretorInterface = { id: 0, nome: '' };
-  mostrarFormulario = false;
-  
+
+  mensagemErro = signal('');
+
+  constructor(private diretorService: DiretorService) {}
+
+  ngOnInit(): void {
+    this.carregarDiretores();
+  }
+
+  carregarDiretores(): void {
+    this.diretorService.listar().subscribe({
+      next: (dados) => this.diretores.set(dados),
+      error: (erro) => { 
+        console.error('Erro ao buscar diretores:', erro),
+        this.mensagemErro.set('Não foi possível salvar o diretor. Tente novamente.');
+      }
+    });
+  }
+
   abrirFormulario(): void {
     this.diretorAtual = { id: 0, nome: '' };
-    this.mostrarFormulario = true;
-  }
-
-  editarDiretor(id: number): void {
-    const encontrado = this.diretores.find(d => d.id === id);
-    if (encontrado) {
-      this.diretorAtual = { ...encontrado };
-      this.mostrarFormulario = true;
-    }
-  }
-
-  excluirDiretor(id: number): void {
-    this.diretores = this.diretores.filter(d => d.id !== id);
-  }
-
-  salvarDiretor(): void {
-    if (this.diretorAtual.id === 0) {
-      const novoId = this.diretores.length
-        ? Math.max(...this.diretores.map(d => d.id)) + 1
-        : 1;
-      this.diretores.push({ ...this.diretorAtual, id: novoId });
-    } else {
-      const index = this.diretores.findIndex(d => d.id === this.diretorAtual.id);
-      if (index > -1) this.diretores[index] = { ...this.diretorAtual };
-    }
-    this.cancelar();
+    this.mostrarFormulario.set(true);
   }
 
   cancelar(): void {
-    this.mostrarFormulario = false;
+    this.mostrarFormulario.set(false);
     this.diretorAtual = { id: 0, nome: '' };
+  }
+
+  salvarDiretor(): void {
+    if (!this.diretorAtual.nome?.trim()) {
+      return;
+    }
+
+    if (this.diretorAtual.id === 0) {
+      this.diretorService.salvar(this.diretorAtual).subscribe({
+        next: (diretorSalvo) => {
+          this.diretores.update(lista => [...lista, diretorSalvo]);
+          this.cancelar();
+        },
+        error: (erro) => {
+          console.error('Erro ao salvar diretor:', erro),
+          this.mensagemErro.set('Não foi possível salvar o diretor. Tente novamente.');
+        }
+      });
+      return;
+    }
+
+    this.diretorService.atualizar(this.diretorAtual.id, this.diretorAtual).subscribe({
+      next: (diretorAtualizado) => {
+        this.diretores.update(lista =>
+          lista.map(a => a.id === diretorAtualizado.id ? diretorAtualizado : a)
+        );
+        this.cancelar();
+      },
+      error: (erro) => {
+        console.error('Erro ao atualizar diretor:', erro),
+        this.mensagemErro.set('Não foi possível salvar o diretor. Tente novamente.');
+      }
+    });
+  }
+
+  editarDiretor(id: number): void {
+    this.diretorService.buscarPorId(id).subscribe({
+      next: (diretor) => {
+        this.diretorAtual = { id: diretor.id, nome: diretor.nome };
+        this.mostrarFormulario.set(true);
+      },
+      error: (erro) => {
+        console.error('Erro ao buscar ator:', erro),
+        this.mensagemErro.set('Não foi possível salvar o ator. Tente novamente.');
+      }
+    });
+  }
+
+  excluirDiretor(id: number): void {
+    if (!confirm('Deseja realmente excluir este diretor?')) {
+      return;
+    }
+
+    this.diretorService.excluir(id).subscribe({
+      next: () => this.diretores.update(lista => lista.filter(a => a.id !== id)),
+      error: (erro) => {
+        console.error('Erro ao excluir diretor:', erro),
+        this.mensagemErro.set('Não foi possível salvar o diretor. Tente novamente.');
+      }
+    });
   }
 }

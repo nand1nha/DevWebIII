@@ -4,12 +4,12 @@
       <h2>Gerenciar Atores</h2>
       <p>Cadastre, edite ou remova atores do sistema.</p>
     </div>
+
     <button class="btn btn-primary" (click)="abrirFormulario()">
       <span>+</span> Adicionar Ator
     </button>
   </header>
 
-  <!-- Tabela (desktop) -->
   <div class="table-wrapper">
     <table class="tabela">
       <thead>
@@ -19,19 +19,40 @@
           <th style="width: 200px; text-align: right;">Ações</th>
         </tr>
       </thead>
+
       <tbody>
-        @for (ator of atores; track ator.id) {
+        @for (ator of atores(); track ator.id) {
           <tr>
-            <td><span class="badge-id">#{{ ator.id }}</span></td>
-            <td class="nome">{{ ator.nome }}</td>
+            <td>
+              <span class="badge-id">#{{ ator.id }}</span>
+            </td>
+
+            <td class="nome">
+              {{ ator.nome }}
+            </td>
+
             <td class="acoes">
-              <button class="btn btn-ghost" (click)="editarAtor(ator.id)">Editar</button>
-              <button class="btn btn-danger" (click)="excluirAtor(ator.id)">Excluir</button>
+              <button
+                class="btn btn-ghost"
+                (click)="editarAtor(ator.id)">
+                Editar
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="$event.preventDefault(); $event.stopPropagation(); excluirAtor(ator.id)">
+                Excluir
+              </button>
             </td>
           </tr>
-        } @empty {
+        }
+
+        @empty {
           <tr>
-            <td colspan="3" class="vazio">Nenhum ator cadastrado.</td>
+            <td colspan="3" class="vazio">
+              Nenhum ator cadastrado.
+            </td>
           </tr>
         }
       </tbody>
@@ -39,18 +60,35 @@
   </div>
 </div>
 
-<!-- Modal -->
-@if (mostrarFormulario) {
+@if (mostrarFormulario()) {
   <div class="modal-backdrop" (click)="cancelar()">
+
     <div class="modal" (click)="$event.stopPropagation()">
+
       <div class="modal-header">
-        <h3>{{ atorAtual.id === 0 ? 'Adicionar Ator' : 'Editar Ator' }}</h3>
-        <button class="btn-close" (click)="cancelar()">×</button>
+        <h3>
+          {{ atorAtual.id === 0 ? 'Adicionar Ator' : 'Editar Ator' }}
+        </h3>
+
+        <button
+          type="button"
+          class="btn-close"
+          (click)="cancelar()">
+          ×
+        </button>
       </div>
 
-      <form (ngSubmit)="salvarAtor()" #form="ngForm" class="modal-body">
+      <form
+        (ngSubmit)="salvarAtor()"
+        #form="ngForm"
+        class="modal-body">
+
         <div class="form-group">
-          <label for="nome">Nome do Ator</label>
+
+          <label for="nome">
+            Nome do Ator
+          </label>
+
           <input
             id="nome"
             type="text"
@@ -60,17 +98,33 @@
             placeholder="Ex.: Leonardo DiCaprio"
             #nome="ngModel"
             class="input">
+
           @if (nome.invalid && nome.touched) {
-            <small class="erro">Informe o nome do ator.</small>
+            <small class="erro">
+              Informe o nome do ator.
+            </small>
           }
+
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" (click)="cancelar()">Cancelar</button>
-          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+
+          <button
+            type="button"
+            class="btn btn-ghost"
+            (click)="cancelar()">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="form.invalid">
             {{ atorAtual.id === 0 ? 'Salvar' : 'Atualizar' }}
           </button>
+
         </div>
+
       </form>
     </div>
   </div>
