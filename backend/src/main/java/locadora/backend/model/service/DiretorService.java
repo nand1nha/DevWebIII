@@ -3,23 +3,40 @@ package locadora.backend.model.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import locadora.backend.model.domain.Diretor;
+import locadora.backend.model.repository.DiretorRepository;
 
 @Service 
 public class DiretorService {
     
-    private List<Diretor> diretores = new ArrayList<>();
-    private Long idContador = 1L;
+    @Autowired 
+    private DiretorRepository diretorRepository;
 
-    public List<Diretor> listarTodos() {
-        return diretores;
+        public List<Diretor> listarTodos() {
+        return diretorRepository.findAll();
+    }
+
+    public Diretor buscarPorId(Long id) {
+        return diretorRepository.findById(id).orElse(null);
     }
 
     public Diretor salvar(Diretor diretor) {
-        diretor.setId(idContador++);
-        diretores.add(diretor);
-        return diretor;
+        // 🔒 Blindagem: força INSERT se o id vier nulo ou 0
+        if (diretor.getId() == null || diretor.getId() == 0) {
+            diretor.setId(null);
+        }
+        return diretorRepository.save(diretor);
+    }
+
+    public Diretor atualizar(Long id, Diretor diretor) {
+        diretor.setId(id);
+        return diretorRepository.save(diretor);
+    }
+
+    public void excluir(Long id) {
+        diretorRepository.deleteById(id);
     }
 }
