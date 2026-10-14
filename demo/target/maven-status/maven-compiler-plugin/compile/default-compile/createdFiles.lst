@@ -1,5 +1,0 @@
-controller/App.class
-utils/HibernateUtil.class
-model/application/AplCadastrarAtor.class
-model/domain/Ator.class
-controller/SrvCadastrarAtor.class

@@ -1,6 +1,5 @@
 package locadora.backend.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ public class DiretorService {
     }
 
     public Diretor salvar(Diretor diretor) {
-        // 🔒 Blindagem: força INSERT se o id vier nulo ou 0
         if (diretor.getId() == null || diretor.getId() == 0) {
             diretor.setId(null);
         }

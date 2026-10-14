@@ -1,0 +1,195 @@
+<div class="crud-page">
+  <header class="crud-header">
+    <div>
+      <h2>Gerenciar Itens</h2>
+      <p>Cadastre, edite ou remova itens do acervo.</p>
+    </div>
+
+    <button class="btn btn-primary" (click)="abrirFormulario()">
+      <span>+</span> Adicionar Item
+    </button>
+  </header>
+
+  <div class="table-wrapper">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th style="width: 80px;">ID</th>
+          <th style="width: 120px;">Nº Série</th>
+          <th>Data Aquisição</th>
+          <th>Tipo</th>
+          <th>Título</th>
+          <th style="width: 200px; text-align: right;">Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (item of itens(); track item.id) {
+          <tr>
+            <td>
+              <span class="badge-id">#{{ item.id }}</span>
+            </td>
+
+            <td>{{ item.numSerie }}</td>
+
+            <td>{{ item.dtAquisicao | date:'dd/MM/yyyy' }}</td>
+
+            <td>{{ item.tipoItem }}</td>
+
+            <td>{{ item.titulo?.nome || '—' }}</td>
+
+            <td class="acoes">
+              <button
+                class="btn btn-ghost"
+                (click)="editarItem(item.id!)">
+                Editar
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="$event.preventDefault(); $event.stopPropagation(); excluirItem(item.id!)">
+                Excluir
+              </button>
+            </td>
+          </tr>
+        }
+
+        @empty {
+          <tr>
+            <td colspan="6" class="vazio">
+              Nenhum item cadastrado.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (mostrarFormulario()) {
+  <div class="modal-backdrop" (click)="cancelar()">
+
+    <div class="modal" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <!-- 🔧 Se Versão A (id obrigatório): use itemAtual.id === 0 -->
+        <!-- 🔧 Se Versão B (id opcional):   use itemAtual.id         -->
+        <h3>
+          {{ itemAtual.id === 0 ? 'Adicionar Item' : 'Editar Item' }}
+        </h3>
+
+        <button type="button" class="btn-close" (click)="cancelar()">
+          ×
+        </button>
+      </div>
+
+      <form
+        (ngSubmit)="salvarItem()"
+        #form="ngForm"
+        class="modal-body">
+
+        <!-- NÚMERO DE SÉRIE -->
+        <div class="form-group">
+          <label for="numSerie">Número de Série</label>
+
+          <input
+            id="numSerie"
+            type="number"
+            [(ngModel)]="itemAtual.numSerie"
+            name="numSerie"
+            required
+            placeholder="Ex.: 1001"
+            #numSerie="ngModel"
+            class="input">
+
+          @if (numSerie.invalid && numSerie.touched) {
+            <small class="erro">Informe o número de série.</small>
+          }
+        </div>
+
+        <!-- DATA DE AQUISIÇÃO -->
+        <div class="form-group">
+          <label for="dtAquisicao">Data de Aquisição</label>
+
+          <input
+            id="dtAquisicao"
+            type="date"
+            [(ngModel)]="itemAtual.dtAquisicao"
+            name="dtAquisicao"
+            required
+            #dtAquisicao="ngModel"
+            class="input">
+
+          @if (dtAquisicao.invalid && dtAquisicao.touched) {
+            <small class="erro">Informe a data de aquisição.</small>
+          }
+        </div>
+
+        <!-- TIPO DO ITEM -->
+        <div class="form-group">
+          <label for="tipoItem">Tipo do Item</label>
+
+          <select
+            id="tipoItem"
+            [(ngModel)]="itemAtual.tipoItem"
+            name="tipoItem"
+            required
+            #tipoItem="ngModel"
+            class="input">
+
+            <option value="">— Selecione o tipo —</option>
+
+            @for (tipo of tiposItem; track tipo) {
+              <option [value]="tipo">{{ tipo }}</option>
+            }
+          </select>
+
+          @if (tipoItem.invalid && tipoItem.touched) {
+            <small class="erro">Informe o tipo do item.</small>
+          }
+        </div>
+
+        <!-- TÍTULO -->
+        <div class="form-group">
+          <label for="titulo">Título</label>
+
+          <select
+            id="titulo"
+            [(ngModel)]="tituloIdSelecionado"
+            name="titulo"
+            required
+            #titulo="ngModel"
+            class="input">
+
+            <option [ngValue]="null">— Selecione um título —</option>
+
+            @for (t of titulos(); track t.id) {
+              <option [ngValue]="t.id">{{ t.nome }} ({{ t.ano }})</option>
+            }
+          </select>
+
+          @if (titulo.invalid && titulo.touched) {
+            <small class="erro">Selecione um título.</small>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" (click)="cancelar()">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="form.invalid">
+            <!-- 🔧 A: itemAtual.id === 0 ? 'Salvar' : 'Atualizar' -->
+            <!-- 🔧 B: itemAtual.id ? 'Atualizar' : 'Salvar' -->
+            {{ itemAtual.id === 0 ? 'Salvar' : 'Atualizar' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+}

@@ -1,0 +1,257 @@
+<div class="crud-page">
+  <header class="crud-header">
+    <div>
+      <h2>Gerenciar Títulos</h2>
+      <p>Cadastre, edite ou remova títulos do sistema.</p>
+    </div>
+
+    <button class="btn btn-primary" (click)="abrirFormulario()">
+      <span>+</span> Adicionar Título
+    </button>
+  </header>
+
+  <div class="table-wrapper">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th style="width: 80px;">ID</th>
+          <th>Nome</th>
+          <th style="width: 100px;">Ano</th>
+          <th>Categoria</th>
+          <th>Diretor</th>
+          <th>Classe</th>
+          <th style="width: 200px; text-align: right;">Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (titulo of titulos(); track titulo.id) {
+          <tr>
+            <td>
+              <span class="badge-id">#{{ titulo.id }}</span>
+            </td>
+
+            <td class="nome">
+              {{ titulo.nome }}
+            </td>
+
+            <td>{{ titulo.ano }}</td>
+
+            <td>{{ titulo.categoria }}</td>
+
+            <td>{{ titulo.diretor?.nome || '—' }}</td>
+
+            <td>{{ titulo.classe?.nome || '—' }}</td>
+
+            <td class="acoes">
+              <button
+                class="btn btn-ghost"
+                (click)="editarTitulo(titulo.id!)">
+                Editar
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="$event.preventDefault(); $event.stopPropagation(); excluirTitulo(titulo.id!)">
+                Excluir
+              </button>
+            </td>
+          </tr>
+        }
+
+        @empty {
+          <tr>
+            <td colspan="7" class="vazio">
+              Nenhum título cadastrado.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (mostrarFormulario()) {
+  <div class="modal-backdrop" (click)="cancelar()">
+
+    <div class="modal" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h3>
+          {{ tituloAtual.id === 0 ? 'Editar Título' : 'Adicionar Título' }}
+        </h3>
+
+        <button
+          type="button"
+          class="btn-close"
+          (click)="cancelar()">
+          ×
+        </button>
+      </div>
+
+      <form
+        (ngSubmit)="salvarTitulo()"
+        #form="ngForm"
+        class="modal-body">
+
+        <!-- NOME -->
+        <div class="form-group">
+          <label for="nome">Nome do Título</label>
+
+          <input
+            id="nome"
+            type="text"
+            [(ngModel)]="tituloAtual.nome"
+            name="nome"
+            required
+            placeholder="Ex.: Matrix"
+            #nome="ngModel"
+            class="input">
+
+          @if (nome.invalid && nome.touched) {
+            <small class="erro">Informe o nome do título.</small>
+          }
+        </div>
+
+        <!-- ANO -->
+        <div class="form-group">
+          <label for="ano">Ano</label>
+
+          <input
+            id="ano"
+            type="number"
+            [(ngModel)]="tituloAtual.ano"
+            name="ano"
+            required
+            placeholder="Ex.: 1999"
+            #ano="ngModel"
+            class="input">
+
+          @if (ano.invalid && ano.touched) {
+            <small class="erro">Informe o ano.</small>
+          }
+        </div>
+
+        <!-- CATEGORIA -->
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+
+          <input
+            id="categoria"
+            type="text"
+            [(ngModel)]="tituloAtual.categoria"
+            name="categoria"
+            required
+            placeholder="Ex.: Ficção"
+            #categoria="ngModel"
+            class="input">
+
+          @if (categoria.invalid && categoria.touched) {
+            <small class="erro">Informe a categoria.</small>
+          }
+        </div>
+
+        <!-- SINOPSE -->
+        <div class="form-group">
+          <label for="sinopse">Sinopse</label>
+
+          <textarea
+            id="sinopse"
+            [(ngModel)]="tituloAtual.sinopse"
+            name="sinopse"
+            rows="3"
+            placeholder="Breve descrição do título..."
+            class="input">
+          </textarea>
+        </div>
+
+        <!-- DIRETOR -->
+        <div class="form-group">
+          <label for="diretor">Diretor</label>
+
+          <select
+            id="diretor"
+            [(ngModel)]="diretorIdSelecionado"
+            name="diretor"
+            required
+            #diretor="ngModel"
+            class="input">
+
+            <option [ngValue]="null">— Selecione um diretor —</option>
+
+            @for (d of diretores(); track d.id) {
+              <option [ngValue]="d.id">{{ d.nome }}</option>
+            }
+          </select>
+
+          @if (diretor.invalid && diretor.touched) {
+            <small class="erro">Selecione um diretor.</small>
+          }
+        </div>
+
+        <!-- CLASSE -->
+        <div class="form-group">
+          <label for="classe">Classe</label>
+
+          <select
+            id="classe"
+            [(ngModel)]="classeIdSelecionado"
+            name="classe"
+            required
+            #classe="ngModel"
+            class="input">
+
+            <option [ngValue]="null">— Selecione uma classe —</option>
+
+            @for (c of classes(); track c.id) {
+              <option [ngValue]="c.id">{{ c.nome }}</option>
+            }
+          </select>
+
+          @if (classe.invalid && classe.touched) {
+            <small class="erro">Selecione uma classe.</small>
+          }
+        </div>
+
+        <!-- ATORES -->
+        <div class="form-group">
+          <label>Atores</label>
+
+          @if (atores().length === 0) {
+            <small class="erro">Nenhum ator cadastrado ainda.</small>
+          } @else {
+            <div class="checkbox-list">
+              @for (a of atores(); track a.id) {
+                <label class="checkbox-item">
+                  <input
+                    type="checkbox"
+                    [checked]="isAtorSelecionado(a.id!)"
+                    (change)="toggleAtor(a.id!)">
+                  <span>{{ a.nome }}</span>
+                </label>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-ghost"
+            (click)="cancelar()">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="form.invalid">
+            {{ tituloAtual.id === 0 ? 'Atualizar' : 'Salvar' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+}

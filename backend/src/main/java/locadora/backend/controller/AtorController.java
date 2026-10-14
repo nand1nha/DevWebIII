@@ -1,13 +1,11 @@
 package locadora.backend.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import locadora.backend.model.domain.Ator;
-import locadora.backend.model.domain.Classe;
 import locadora.backend.model.service.AtorService;
 
 import java.util.List;

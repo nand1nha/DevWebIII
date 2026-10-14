@@ -1,6 +1,5 @@
 package locadora.backend.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ public class ClasseService {
     }
 
     public Classe salvar(Classe classe) {
-        // 🔒 Blindagem: força INSERT se o id vier nulo ou 0
         if (classe.getId() == null || classe.getId() == 0) {
             classe.setId(null);
         }
