@@ -21,6 +21,6 @@ public class Ator {
     private Long id;
     
     @Column(nullable = false)
-    @Schema(description = "ID único do ator", example = "1")
+    @Schema(description = "Nome completo do ator", example = "Keanu Reeves")
     private String nome;
 }

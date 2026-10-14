@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,13 +23,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Schema(description = "Representa um titulo do acervo")
 public class Titulo {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "ID único do titulo", example = "1")
     private Long id;
 
     @Column(nullable = false)
+     @Schema(description = "Nome do titulo do livro", example = "Keanu Reeves")
     private String nome;
 
     @Column(nullable = false)
