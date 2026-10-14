@@ -32,24 +32,29 @@ public class Titulo {
     private Long id;
 
     @Column(nullable = false)
-     @Schema(description = "Nome do titulo do livro", example = "Keanu Reeves")
+    @Schema(description = "Nome do título", example = "Matrix")
     private String nome;
 
     @Column(nullable = false)
+    @Schema(description = "Ano de lançamento", example = "1999")
     private Integer ano;
 
     @Column(length = 1000)
+    @Schema(description = "Sinopse do título", example = "Um hacker descobre a verdade sobre sua realidade.")
     private String sinopse;
 
     @Column(nullable = false)
+    @Schema(description = "Categoria/gênero do título", example = "Ficção")
     private String categoria;
 
     @ManyToOne
     @JoinColumn(name = "diretor_id")
+    @Schema(description = "Diretor do título")
     private Diretor diretor;
 
     @ManyToOne
     @JoinColumn(name = "classe_id")
+    @Schema(description = "Classe de locação do título")
     private Classe classe;
 
     @ManyToMany
@@ -58,9 +63,11 @@ public class Titulo {
         joinColumns = @JoinColumn(name = "titulo_id"),
         inverseJoinColumns = @JoinColumn(name = "ator_id")
     )
+    @Schema(description = "Atores que participam do título")
     private List<Ator> atores = new ArrayList<>();
 
     // Um título tem vários itens
     @OneToMany(mappedBy = "titulo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Schema(description = "Itens físicos (cópias) deste título")
     private List<Item> itens = new ArrayList<>();
 }

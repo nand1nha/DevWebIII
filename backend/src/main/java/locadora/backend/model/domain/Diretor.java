@@ -21,6 +21,6 @@ public class Diretor {
     private Long id;
     
     @Column(nullable = false)
-    @Schema(description = "Nome completo do diretor", example = "Keanu Reeves")
+    @Schema(description = "Nome completo do diretor", example = "Lana Wachowski")
     private String nome;
 }

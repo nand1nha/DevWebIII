@@ -22,12 +22,14 @@ public class Classe {
     private Long id;
 
     @Column(nullable = false)
-    @Schema(description = "Nome completo da classe", example = "Keanu Reeves")
+    @Schema(description = "Nome da classe", example = "Lançamento")
     private String nome;
 
     @Column(nullable = false)
+    @Schema(description = "Valor da locação em reais", example = "5.0")
     private Double valor;
     
     @Column(nullable = false)
+    @Schema(description = "Prazo de devolução em dias", example = "2.0")
     private Double prazoDevolucao;
 }
