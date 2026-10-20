@@ -8,5 +8,8 @@ import locadora.backend.model.domain.Ator;
 @Repository 
 public interface AtorRepository extends JpaRepository<Ator, Long> {
     
-    
+    boolean existsByNome(String nome);
+
+    boolean existsByNomeAndIdNot(String nome, Long id);
+
 }

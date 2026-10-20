@@ -1,0 +1,13 @@
+package locadora.backend.exception;
+
+public class RecursoNaoEncontradoException extends RuntimeException {
+
+    public RecursoNaoEncontradoException(String recurso, Long id) {
+        super(recurso + " não encontrado(a) com id: " + id);
+    }
+
+    public RecursoNaoEncontradoException(String message) {
+        super(message);
+    }
+
+}
